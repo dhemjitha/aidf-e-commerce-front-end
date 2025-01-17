@@ -1,6 +1,6 @@
 import Hero from "./components/Hero"
 import Navigation from "./components/Navigation"
-import { Button } from "./components/ui/button"
+import ProductListings from "./components/ProductListings"
 
 function App() {
 
@@ -8,6 +8,7 @@ function App() {
     <>
       <Navigation />
       <Hero />
+      <ProductListings/>
     </>
   )
 }

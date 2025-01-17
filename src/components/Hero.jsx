@@ -12,7 +12,7 @@ function Hero() {
                     Find Your Best Deal
                 </h1>
                 <p className="text-xl mb-12 text-center max-w-2xl">
-                    Describe your dream product and experience,
+                    Describe your dream laptop and experience,
                     and we'll find you the perfect and well-matched item.
                 </p>
 
@@ -21,7 +21,7 @@ function Hero() {
                 >
                     <Input
                         type="text"
-                        placeholder="Describe your item, experience, or product..."
+                        placeholder="Describe your item, experience, or laptop..."
                         className="flex-grow  bg-transparent lg:text-lg  text-white placeholder:text-white/60 border-none outline-none ring-0 ring-offset-0 focus:border-none focus:outline-none focus:ring-0 focus:ring-offset-0 focus-visible:border-none focus-visible:outline-none focus-visible:ring-0 focus-visible:ring-offset-0 "
                     />
                     <Button
