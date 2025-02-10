@@ -98,23 +98,23 @@ function ProductListings() {
     const categories = [
         {
             "name": "ALL",
-            "image": "/assets/logo/asus-logo.webp"
+            "image": "/assets/logo/new/all.png"
         },
         {
             "name": "Asus",
-            "image": "/assets/logo/asus-logo.webp"
+            "image": "/assets/logo/new/asus.png"
         },
         {
             "name": "Apple",
-            "image": "/assets/logo/apple-logo.png"
+            "image": "/assets/logo/new/apple.png"
         },
         {
             "name": "Dell",
-            "image": "/assets/logo/dell-logo.png"
+            "image": "/assets/logo/new/dell.png"
         },
         {
             "name": "Msi",
-            "image": "/assets/logo/msi-logo-2.png"
+            "image": "/assets/logo/new/msi blk.png"
         },
     ]
 

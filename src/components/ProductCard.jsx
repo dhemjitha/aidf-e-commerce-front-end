@@ -36,11 +36,6 @@ function ProductCard(props) {
                 </div>
             </div>
 
-            <div className="mt-4">
-
-                <Button>Click</Button>
-            </div>
-
         </div>
 
     )
