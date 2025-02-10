@@ -1,24 +1,24 @@
 import React from 'react'
 
-function CategoryTab(props) {
+function BrandTab(props) {
 
     const handleClick = () => {
-        props.onClick(props.category.name);
+        props.onClick(props.brand.name);
     }
 
-    if (props.category.name === props.selectedCategory) {
+    if (props.brand.name === props.selectedBrand) {
         return (
             <div className=" rounded px-2 py-1 cursor-pointer" onClick={handleClick}>
-                <img src={props.category.image} className="h-22 w-20" />
+                <img src={props.brand.image} className="h-22 w-20" />
         </div>
         )
     }
 
     return (
         <div className="rounded px-2 py-1 cursor-pointer" onClick={handleClick}>
-                <img src={props.category.image} className="h-22 w-20" />
+                <img src={props.brand.image} className="h-22 w-20" />
         </div>
     )
 }
 
-export default CategoryTab
+export default BrandTab

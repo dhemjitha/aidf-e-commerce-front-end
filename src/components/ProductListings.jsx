@@ -1,14 +1,14 @@
 import { useState } from 'react'
-import CategoryTab from './CategoryTab'
+import BrandTab from './BrandTab'
 import ProductCard from './ProductCard'
 
 function ProductListings() {
 
     const products = [
         {
-            "_id": "6755d5f49a1ea956f3ce2475",
+            "_id": "1",
             "name": "Asus TUF Gaming A15 Laptop",
-            "category": "Laptop, Asus",
+            "brand": "Laptop, Asus",
             "rating": 4.7,
             "reviews": 4578,
             "image": "/assets/products/asus-tuf-gaming-a15.webp",
@@ -17,9 +17,9 @@ function ProductListings() {
             "__v": 0
         },
         {
-            "_id": "6755d5f49a1ea956f3ce2475",
+            "_id": "2",
             "name": "DELL Latitude 9330",
-            "category": "Laptop, DELL",
+            "brand": "Laptop, DELL",
             "rating": 3.5,
             "reviews": 2533,
             "image": "/assets/products/dell-latitude.webp",
@@ -28,9 +28,9 @@ function ProductListings() {
             "__v": 0
         },
         {
-            "_id": "6755d5f49a1ea956f3ce2475",
+            "_id": "3",
             "name": "MacBook Pro M2",
-            "category": "Laptop, Apple",
+            "brand": "Laptop, Apple",
             "rating": 4.9,
             "reviews": 3110,
             "image": "/assets/products/macbooks-pro-m2.webp",
@@ -39,9 +39,9 @@ function ProductListings() {
             "__v": 0
         },
         {
-            "_id": "6755d5f49a1ea956f3ce2475",
+            "_id": "4",
             "name": "MSI Stealth 16 AI Studio Laptop",
-            "category": "Laptop, MSI",
+            "brand": "Laptop, MSI",
             "rating": 4.6,
             "reviews": 1300,
             "image": "/assets/products/msi-stealth.jpg",
@@ -50,9 +50,9 @@ function ProductListings() {
             "__v": 0
         },
         {
-            "_id": "6755d5f49a1ea956f3ce2475",
+            "_id": "5",
             "name": "DELL XPS 14",
-            "category": "Laptop, DELL",
+            "brand": "Laptop, DELL",
             "rating": 4.1,
             "reviews": 4400,
             "image": "/assets/products/dell-xps-14.jpg",
@@ -61,9 +61,9 @@ function ProductListings() {
             "__v": 0
         },
         {
-            "_id": "6755d5f49a1ea956f3ce2475",
+            "_id": "6",
             "name": "MSI Cyborg 15 Gaming Laptop",
-            "category": "Laptop, MSI",
+            "brand": "Laptop, MSI",
             "rating": 6.7,
             "reviews": 7893,
             "image": "/assets/products/msi-cyborg.jpg",
@@ -72,9 +72,9 @@ function ProductListings() {
             "__v": 0
         },
         {
-            "_id": "6755d5f49a1ea956f3ce2475",
+            "_id": "7",
             "name": "Asus VivoBook Laptop",
-            "category": "Laptop, Asus",
+            "brand": "Laptop, Asus",
             "rating": 4.3,
             "reviews": 2234,
             "image": "/assets/products/asus-vivobook.webp",
@@ -83,9 +83,9 @@ function ProductListings() {
             "__v": 0
         },
         {
-            "_id": "6755d5f49a1ea956f3ce2475",
+            "_id": "8",
             "name": "MacBook Pro M4",
-            "category": "Laptop, Apple",
+            "brand": "Laptop, Apple",
             "rating": 4.9,
             "reviews": 5671,
             "image": "/assets/products/macbooks-pro-m4.jpg",
@@ -95,7 +95,7 @@ function ProductListings() {
         }
     ]
 
-    const categories = [
+    const brands = [
         {
             "name": "ALL",
             "image": "/assets/logo/new/all.png"
@@ -118,14 +118,14 @@ function ProductListings() {
         },
     ]
 
-    const [selectedCategory, setSelectCategory] = useState("ALL");
+    const [selectedBrand, setSelectBrand] = useState("ALL");
 
-    const handleSelectCategory = (category) => {
-        setSelectCategory(category);
+    const handleSelectBrand = (brand) => {
+        setSelectBrand(brand);
     }
     
-    const filterProducts = selectedCategory === "ALL" ? products : products.filter((product) => {
-        return product.category.toLowerCase().includes(selectedCategory.toLowerCase());
+    const filterProducts = selectedBrand === "ALL" ? products : products.filter((product) => {
+        return product.brand.toLowerCase().includes(selectedBrand.toLowerCase());
     })
 
     return (
@@ -141,8 +141,8 @@ function ProductListings() {
 
             <div className="flex items-center gap-x-8 mb-6">
                 {
-                    categories.map((category) => {
-                        return <CategoryTab selectedCategory={selectedCategory} category={category} onClick={handleSelectCategory} />
+                    brands.map((brand) => {
+                        return <BrandTab selectedBrand={selectedBrand} key={brand.name} brand={brand} onClick={handleSelectBrand} />
                     })
                 }
             </div>

@@ -22,7 +22,7 @@ function ProductCard(props) {
                 <h3 className="font-semibold text-lg">{props.product.name}</h3>
                 <div className="flex items-center text-muted-foreground">
                     <Info className="h-4 w-4 mr-1" />
-                    <span>{props.product.category}</span>
+                    <span>{props.product.brand}</span>
                 </div>
                 <div className="flex items-center space-x-1">
                     <Star className="h-4 w-4 fill-primary text-primary" />
