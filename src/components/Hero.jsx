@@ -37,13 +37,6 @@ function Hero() {
                 </form>
             </div>
 
-            {/* Hero Image */}
-            <img
-                src="/assets/hero/hero.png"
-                alt=""
-                className="absolute top-0 left-0 w-full h-full object-cover -z-10"
-            />
-
         </div>
     )
 }
