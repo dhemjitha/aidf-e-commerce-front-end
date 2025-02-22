@@ -45,14 +45,14 @@ function Navigation() {
             {/* Mobile Menu */}
             {isOpen && (
                 <div className="lg:hidden absolute top-16 left-0 right-0 flex flex-col bg-black p-4 z-50">
-                    <Link to="/" onClick={toggleMenu} className="hover:text-gray-400 flex items-center justify-center py-4">
+                    <Link to="/" onClick={toggleMenu} className="hover:text-gray-400 flex items-center justify-center py-3">
                         Home
                     </Link>
-                    <Link to="/products" onClick={toggleMenu} className="hover:text-gray-400 flex items-center justify-center py-4">
+                    <Link to="/products" onClick={toggleMenu} className="hover:text-gray-400 flex items-center justify-center py-3 mb-2">
                         Products
                     </Link>
 
-                    <Button variant="ghost">
+                    <Button variant="ghost" className="mb-3">
                         <Link to="/sign-in">Log In</Link>
                     </Button>
                     <Button>
