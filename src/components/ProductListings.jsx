@@ -1,12 +1,17 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import BrandTab from './BrandTab'
 import ProductCard from './ProductCard'
-import { Button } from './ui/button';
 import { getProducts } from '@/lib/api/products';
+import { AlertCircle } from 'lucide-react';
+import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert"
+
 
 function ProductListings() {
 
     const [products, setProducts] = useState([]);
+    const [isLoading, setIsLoading] = useState(true);
+    const [isError, setIsError] = useState(false);
+    const [error, setError] = useState("");
 
     const brands = [
         {
@@ -36,10 +41,102 @@ function ProductListings() {
     const handleSelectBrand = (brand) => {
         setSelectBrand(brand);
     }
-    
+
     const filterProducts = selectedBrand === "ALL" ? products : products.filter((product) => {
         return product.brand.toLowerCase().includes(selectedBrand.toLowerCase());
     })
+
+    useEffect(() => {
+        getProducts().then((products) => {
+            setProducts(products);
+        }).catch((error) => {
+            setIsError(true);
+            setError(error.message);
+        }).finally(() => {
+            setIsLoading(false);
+        })
+    }, [])
+
+    if (isLoading) {
+        return (
+
+            <section className="px-8 py-8 lg:py-16">
+                <div className="mb-12">
+                    <h2 className="text-3xl md:text-4xl font-bold mb-4">
+                        What are you looking for?
+                    </h2>
+                    <p className="text-lg text-muted-foreground">
+                        Shop by brand to find the latest trends and essentials.
+                    </p>
+                </div>
+
+                <div className="flex items-center gap-x-8 mb-6">
+                    {
+                        brands.map((brand) => {
+                            return <BrandTab selectedBrand={selectedBrand} key={brand.name} brand={brand} onClick={handleSelectBrand} />
+                        })
+                    }
+                </div>
+
+                <div className="mb-12">
+                    <h2 className="text-3xl md:text-4xl font-bold mb-4">
+                        Top trending Featured Products
+                    </h2>
+                    <p className="text-lg text-muted-foreground">
+                        Explore the most trending products globally for an exceptional shopping experience with ShopZoneAI.
+                    </p>
+                </div>
+
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 mt-4 cursor-pointer">
+                    <p>Loading...</p>
+                </div>
+
+            </section>
+
+        );
+    }
+
+    if (isError) {
+        return (
+            <section className="px-8 py-8 lg:py-16">
+                <div className="mb-12">
+                    <h2 className="text-3xl md:text-4xl font-bold mb-4">
+                        What are you looking for?
+                    </h2>
+                    <p className="text-lg text-muted-foreground">
+                        Shop by brand to find the latest trends and essentials.
+                    </p>
+                </div>
+
+                <div className="flex items-center gap-x-8 mb-6">
+                    {
+                        brands.map((brand) => {
+                            return <BrandTab selectedBrand={selectedBrand} key={brand.name} brand={brand} onClick={handleSelectBrand} />
+                        })
+                    }
+                </div>
+
+                <div className="mb-12">
+                    <h2 className="text-3xl md:text-4xl font-bold mb-4">
+                        Top trending Featured Products
+                    </h2>
+                    <p className="text-lg text-muted-foreground">
+                        Explore the most trending products globally for an exceptional shopping experience with ShopZoneAI.
+                    </p>
+                </div>
+
+                <Alert variant="destructive">
+                    <AlertCircle className="h-4 w-4" />
+                    <AlertTitle>Error</AlertTitle>
+                    <AlertDescription>
+                        Error while fetching data...
+                    </AlertDescription>
+                </Alert>
+
+
+            </section>
+        );
+    }
 
     return (
         <section className="px-8 py-8 lg:py-16">
@@ -47,12 +144,6 @@ function ProductListings() {
                 <h2 className="text-3xl md:text-4xl font-bold mb-4">
                     What are you looking for?
                 </h2>
-
-                <Button onClick={ async() => {
-                    const data = await getProducts();
-                    setProducts(data);
-                }}>Fetch Data</Button>
-
                 <p className="text-lg text-muted-foreground">
                     Shop by brand to find the latest trends and essentials.
                 </p>
@@ -60,8 +151,8 @@ function ProductListings() {
 
             <div className="flex items-center gap-x-8 mb-6">
                 {
-                    brands.map((brand) => {
-                        return <BrandTab selectedBrand={selectedBrand} key={brand.name} brand={brand} onClick={handleSelectBrand} />
+                    brands.map((brand, i) => {
+                        return <BrandTab selectedBrand={selectedBrand} key={i} brand={brand} onClick={handleSelectBrand} />
                     })
                 }
             </div>
@@ -76,13 +167,11 @@ function ProductListings() {
             </div>
 
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 mt-4 cursor-pointer">
-
                 {
                     filterProducts.map((product) => {
-                        return <ProductCard product={product} key={product._id} />
+                        return (<ProductCard key={product._id} product={product} />)
                     })
                 }
-
             </div>
 
         </section>
