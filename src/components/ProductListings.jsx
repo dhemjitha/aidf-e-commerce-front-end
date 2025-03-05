@@ -1,17 +1,14 @@
 import { useState, useEffect } from 'react'
 import BrandTab from './BrandTab'
 import ProductCard from './ProductCard'
-import { getProducts } from '@/lib/api/products';
 import { AlertCircle } from 'lucide-react';
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert"
+import { useGetProductsQuery } from '@/lib/api';
 
 
 function ProductListings() {
 
-    const [products, setProducts] = useState([]);
-    const [isLoading, setIsLoading] = useState(true);
-    const [isError, setIsError] = useState(false);
-    const [error, setError] = useState("");
+    const { data: products, isLoading, isError } = useGetProductsQuery();
 
     const brands = [
         {
@@ -45,17 +42,6 @@ function ProductListings() {
     const filterProducts = selectedBrand === "ALL" ? products : products.filter((product) => {
         return product.brand.toLowerCase().includes(selectedBrand.toLowerCase());
     })
-
-    useEffect(() => {
-        getProducts().then((products) => {
-            setProducts(products);
-        }).catch((error) => {
-            setIsError(true);
-            setError(error.message);
-        }).finally(() => {
-            setIsLoading(false);
-        })
-    }, [])
 
     if (isLoading) {
         return (

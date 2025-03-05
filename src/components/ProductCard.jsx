@@ -1,12 +1,13 @@
 import React from 'react'
 import { Button } from './ui/button'
 import { Info, Star } from 'lucide-react'
+import { Link } from 'react-router'
 
 function ProductCard(props) {
     return (
 
-        <div
-            // to={`/hotel/${props.hotel._id}`}
+        <Link
+            to={`/products/${props.product._id}`}
             key={props.product._id}
             className="block group relative"
         >
@@ -36,7 +37,7 @@ function ProductCard(props) {
                 </div>
             </div>
 
-        </div>
+        </Link>
 
     )
 }
