@@ -27,9 +27,9 @@ function ProductCard(props) {
                 </div>
                 <div className="flex items-center space-x-1">
                     <Star className="h-4 w-4 fill-primary text-primary" />
-                    <span className="font-medium">{props.product.rating}</span>
+                    <span className="font-medium">{props.product?.rating ?? "No Ratings"}</span>
                     <span className="text-muted-foreground">
-                        ({props.product.reviews.toLocaleString()} Reviews)
+                        ({props.product.reviews?.toLocaleString() ?? "No"} Reviews)
                     </span>
                 </div>
                 <div className="flex items-baseline space-x-2">

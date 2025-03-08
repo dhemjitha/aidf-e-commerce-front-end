@@ -1,8 +1,10 @@
-const SignInPage = () => {
+import { SignIn } from "@clerk/clerk-react"
+
+function SignInPage() {
     return (
-        <div>
-            Sign In Page
-        </div>
+        <main className="flex items-center justify-center min-h-screen px-4">
+            <SignIn />
+        </main>
     )
 }
 

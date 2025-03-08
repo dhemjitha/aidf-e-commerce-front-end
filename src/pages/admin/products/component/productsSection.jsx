@@ -10,7 +10,7 @@ function ProductSection() {
 
     if (isLoading) {
         return (
-            <section className="px-8 py-8 lg:py-16">
+            <section className="px-8 py-8 lg:py-16 min-h-screen">
                 <h2 className="text-2xl font-bold mb-4">Current Active Products</h2>
                 <div className="mt-4 flex flex-col gap-y-4">
                     {[...Array(3)].map((_, index) => (
@@ -24,7 +24,7 @@ function ProductSection() {
 
     if (isError) {
         return (
-            <section className="px-8 py-8 lg:py-16">
+            <section className="px-8 py-8 lg:py-16 min-h-screen">
                 <h2 className="text-2xl font-bold mb-4">Current Active Products</h2>
                 <Alert variant="destructive">
                     <AlertTitle>Error</AlertTitle>
@@ -38,7 +38,7 @@ function ProductSection() {
 
     if (!products || products.length === 0) {
         return (
-            <section className="px-8 py-8 lg:py-16">
+            <section className="px-8 py-8 lg:py-16 min-h-screen">
                 <h2 className="text-2xl font-bold mb-4">Current Active Products</h2>
                 <p className="text-muted-foreground">No products available.</p>
             </section>
@@ -46,7 +46,7 @@ function ProductSection() {
     }
 
     return (
-        <section className="px-8 py-8 lg:py-16">
+        <section className="px-8 py-8 lg:py-16 min-h-screen">
             <h2 className="text-2xl font-bold mb-4">Current Active Products</h2>
             <div className="mt-4 flex flex-col gap-y-4">
                 {products.map((product) => (

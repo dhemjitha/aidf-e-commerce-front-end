@@ -1,6 +1,7 @@
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
+import { toast } from "sonner";
 
 import {
     Cpu,
@@ -14,10 +15,35 @@ import {
 import { useParams } from "react-router";
 import { Skeleton } from "@/components/ui/skeleton";
 import { useGetProductsByIdQuery } from "@/lib/api";
+import { useDeleteProductMutation } from "@/lib/api";
+import { useNavigate } from "react-router";
+import { useGetProductsQuery } from "@/lib/api";
 
-export default function LaptopProductPage() {
+export default function AdminProductPage() {
     const { id } = useParams();
     const { data: product, isLoading, isError } = useGetProductsByIdQuery(id);
+
+    const navigate = useNavigate();
+
+    const [deleteProduct] = useDeleteProductMutation();
+    const { refetch } = useGetProductsQuery();
+    
+    const handleClick = async () => {
+        try {
+            toast.loading("Deleting product...");
+            await deleteProduct(id).unwrap();
+            toast.dismiss();
+            toast.success("Product deleted successfully");
+            await refetch();
+            
+        } catch (error) {
+            toast.dismiss();
+            toast.error("Error deleting product");
+
+        }
+        navigate(-1);
+        
+    }
 
     if (isLoading)
         return (
@@ -25,11 +51,6 @@ export default function LaptopProductPage() {
                 <div className="grid lg:grid-cols-2 gap-10">
                     <div className="space-y-6">
                         <Skeleton className="w-full h-[400px] rounded-2xl bg-gray-200" />
-                        <div className="flex space-x-4 justify-center">
-                            {[...Array(3)].map((_, index) => (
-                                <Skeleton key={index} className="h-20 w-20 rounded-lg bg-gray-200" />
-                            ))}
-                        </div>
                     </div>
                     <div className="space-y-8">
                         <Skeleton className="h-10 w-full bg-gray-200" />
@@ -58,19 +79,8 @@ export default function LaptopProductPage() {
                             className="absolute w-full h-full object-cover rounded-lg"
                         />
                     </div>
-                    <div className="flex space-x-4 justify-center">
-                        {[...Array(3)].map((_, index) => (
-                            <div
-                                key={index}
-                                className="w-20 h-20 bg-white rounded-lg overflow-hidden shadow-md hover:border-2 hover:border-blue-500 transition-all"
-                            >
-                                <img
-                                    src={product.image}
-                                    alt={`Thumbnail ${index + 1}`}
-                                    className="w-full h-full object-contain"
-                                />
-                            </div>
-                        ))}
+                    <div className="flex space-x-4">
+                        <Button variant="destructive" onClick={handleClick}>Delete Product</Button>
                     </div>
                 </div>
 
@@ -140,9 +150,6 @@ export default function LaptopProductPage() {
                             <p className="text-3xl font-bold">${product.price}</p>
                             <p className="text-sm text-gray-500">Retail Price</p>
                         </div>
-                        <Button size="lg" >
-                            Buy Now
-                        </Button>
                     </div>
                 </div>
             </div>

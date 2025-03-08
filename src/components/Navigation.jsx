@@ -2,6 +2,7 @@ import React, { useState } from 'react'
 import { Button } from './ui/button'
 import { Menu, X } from 'lucide-react'
 import { Link } from 'react-router';
+import { SignedIn, SignedOut, UserButton } from '@clerk/clerk-react';
 
 function Navigation() {
 
@@ -21,12 +22,8 @@ function Navigation() {
                 <div className="hidden md:flex space-x-6">
                     <Link to="/">Home</Link>
                 </div>
-                <div className="hidden md:flex space-x-6">
-                    <Link to="/products">Products</Link>
-                </div>
             </div>
 
-            {/* Toggle Button for Mobile */}
             <div className="md:hidden">
                 <button onClick={toggleMenu}>
                     {isOpen ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
@@ -34,12 +31,20 @@ function Navigation() {
             </div>
 
             <div className="hidden md:flex items-center space-x-4">
-                <Button variant="ghost">
-                    <Link to="/sign-in">Login</Link>
-                </Button>
-                <Button>
-                    <Link to="/sign-up">Sign Up</Link>
-                </Button>
+                <SignedOut>
+                    <Button variant="ghost">
+                        <Link to="/sign-in">Log In</Link>
+                    </Button>
+                    <Button>
+                        <Link to="/sign-up">Sign Up</Link>
+                    </Button>
+                </SignedOut>
+                <SignedIn>
+                    <UserButton />
+                    <Button>
+                        <Link to="/account">My Account</Link>
+                    </Button>
+                </SignedIn>
             </div>
 
             {/* Mobile Menu */}
@@ -48,16 +53,25 @@ function Navigation() {
                     <Link to="/" onClick={toggleMenu} className="hover:text-gray-400 flex items-center justify-center py-3">
                         Home
                     </Link>
-                    <Link to="/products" onClick={toggleMenu} className="hover:text-gray-400 flex items-center justify-center py-3 mb-2">
-                        Products
-                    </Link>
 
-                    <Button variant="ghost" className="mb-3">
-                        <Link to="/sign-in">Log In</Link>
-                    </Button>
-                    <Button>
-                        <Link to="/sign-up">Sign Up</Link>
-                    </Button>
+                    <SignedOut>
+                        <Button variant="ghost" asChild className="mb-3" onClick={toggleMenu}>
+                            <Link to="/sign-in">Log In</Link>
+                        </Button>
+                        <Button asChild onClick={toggleMenu}>
+                            <Link to="/sign-up">Sign Up</Link>
+                        </Button>
+                    </SignedOut>
+                    <SignedIn>
+                        <UserButton appearance={{
+                            elements: {
+                                rootBox: "w-full items-center justify-center flex mt-4 mb-4"
+                            }
+                        }} />
+                        <Button asChild onClick={toggleMenu}>
+                            <Link to="/account">My Account</Link>
+                        </Button>
+                    </SignedIn>
                 </div>
             )}
 
