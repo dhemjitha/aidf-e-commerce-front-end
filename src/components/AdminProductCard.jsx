@@ -5,28 +5,53 @@ import {
   CardContent,
   CardTitle,
   CardFooter,
+  CardDescription,
 } from "@/components/ui/card";
-import { CircleAlert, BadgeDollarSignIcon } from "lucide-react";
+import { Badge } from "@/components/ui/badge";
+import { Tag, BadgeDollarSign } from "lucide-react";
 
+function AdminProductCard({ product }) {
+  const formatPrice = (price) => {
+    return new Intl.NumberFormat('en-US', {
+      style: 'currency',
+      currency: 'USD',
+      minimumFractionDigits: 2
+    }).format(price);
+  };
 
-function AdminProductCard(props) {
   return (
-    <Link to={`/admin/products/${props.product._id}`}
-      key={props.product._id} className="block">
-      <Card className="bg-sky-500">
-        <CardHeader>
-          <CardTitle>{props.product.name}</CardTitle>
+    <Link to={`/admin/products/${product._id}`} className="block h-full transition-transform hover:scale-[1.02]">
+      <Card className="h-full border-2 hover:border-primary/50 hover:shadow-md transition-all">
+        <CardHeader className="pb-2">
+          <div className="flex justify-between items-start">
+            <div>
+              <CardTitle className="">{product.name}</CardTitle>
+              <CardDescription className="flex items-center gap-x-1 mt-1">
+                <Tag className="h-3 w-3" />
+                <span className="text-sm">{product.brand}</span>
+              </CardDescription>
+            </div>
+            <Badge>{"Laptop"}</Badge>
+          </div>
         </CardHeader>
-        <CardContent></CardContent>
-        <CardFooter className="gap-x-4">
-          <div className="flex items-center gap-x-2">
-            <CircleAlert className="h-4 w-4 text-primary" />
-            <span>{props.product.brand}</span>
+        
+        <CardContent>
+          {product.description && (
+            <p className="text-sm text-muted-foreground line-clamp-2">
+              {product.description}
+            </p>
+          )}
+        </CardContent>
+        
+        <CardFooter className="flex justify-between items-center pt-2">
+          <div className="flex items-center gap-x-1">
+            <BadgeDollarSign className="h-4 w-4 text-green-600" />
+            <span className="font-semibold text-green-600">{formatPrice(product.price)}</span>
           </div>
-          <div className="flex items-center gap-x-2">
-            <BadgeDollarSignIcon className="h-4 w-4 text-primary" />
-            <span>$ {props.product.price}</span>
-          </div>
+          
+          <span className="text-xs text-muted-foreground">
+            ID: {product._id.substring(product._id.length - 6)}
+          </span>
         </CardFooter>
       </Card>
     </Link>
