@@ -13,11 +13,37 @@ import {
 
 import { useParams } from "react-router";
 import { Skeleton } from "@/components/ui/skeleton";
-import { useGetProductsByIdQuery } from "@/lib/api";
+import { useCreateBuyingMutation, useGetProductsByIdQuery } from "@/lib/api";
 
 export default function LaptopProductPage() {
     const { id } = useParams();
     const { data: product, isLoading, isError } = useGetProductsByIdQuery(id);
+
+    const [createBuying, { isLoading: isCreateBuyingLoading}] = useCreateBuyingMutation();
+
+    const handleClick = async () => {
+
+        const userId = window?.Clerk?.user?.id;
+
+        if (!userId) {
+            console.error("No user ID found. Please log in.");
+            return;
+        }
+
+        
+        try {
+            await createBuying({
+                productId: id,
+                userId: userId,
+                quantity: 1,
+                shippingAddress: "123 New York, America",
+                mobileNumber: 786295820,
+                checkoutDate: new Date().toISOString(),
+            })
+        } catch (error) {
+            console.log(error);
+        }
+    }
 
     if (isLoading)
         return (
@@ -140,7 +166,7 @@ export default function LaptopProductPage() {
                             <p className="text-3xl font-bold">${product.price}</p>
                             <p className="text-sm text-gray-500">Retail Price</p>
                         </div>
-                        <Button size="lg" >
+                        <Button size="lg" onClick={handleClick}>
                             Buy Now
                         </Button>
                     </div>
