@@ -1,6 +1,6 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 
-const BACKEND_URL = "https://aidf-e-commerce-back-end-production.up.railway.app";
+const BACKEND_URL = "https://aidf-e-commerce-back-end.vercel.app";
 
 export const api = createApi({
     reducerPath: "api",
@@ -10,6 +10,7 @@ export const api = createApi({
             if (token) {
                 headers.set('Authorization', `Bearer ${token}`);
             }
+            return headers;
         }
     }),
     endpoints: (builder) => ({
