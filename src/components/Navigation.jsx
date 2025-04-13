@@ -1,12 +1,16 @@
 import React, { useState } from 'react'
 import { Button } from './ui/button'
-import { Menu, X } from 'lucide-react'
+import { Heart, Menu, X } from 'lucide-react'
 import { Link } from 'react-router';
 import { SignedIn, SignedOut, UserButton } from '@clerk/clerk-react';
+import { useSelector } from 'react-redux';
+import { cn } from '@/lib/utils';
 
 function Navigation() {
 
     const [isOpen, setIsOpen] = useState(false);
+    const wishlistItems = useSelector((state) => state.wishlist.items);
+    const wishlistCount = wishlistItems.length;
 
     const toggleMenu = () => {
         setIsOpen(!isOpen);
@@ -31,6 +35,16 @@ function Navigation() {
             </div>
 
             <div className="hidden md:flex items-center space-x-4">
+                <Button variant="ghost" className="relative rounded-full">
+                    <Link to="/wishlist" className="flex items-center">
+                        <Heart className={cn("h-5 w-5", wishlistCount > 0 && "fill-red-500 text-red-500")} />
+                        {wishlistCount > 0 && (
+                            <span className="absolute -top-1 -right-1 bg-red-500 text-white text-xs rounded-full h-4 w-4 flex items-center justify-center">
+                                {wishlistCount}
+                            </span>
+                        )}
+                    </Link>
+                </Button>
                 <SignedOut>
                     <Button variant="ghost">
                         <Link to="/sign-in">Log In</Link>

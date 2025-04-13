@@ -20,6 +20,7 @@ import { ClerkProvider } from '@clerk/clerk-react'
 import AccountPage from './pages/account.page'
 import ProtectedLayout from './layouts/protected-layout.layoout'
 import AdminProtectedLayout from './layouts/admin-protected-layout.layout'
+import WishlistPage from './pages/wishlist.page'
 
 
 const PUBLISHABLE_KEY = import.meta.env.VITE_CLERK_PUBLISHABLE_KEY
@@ -44,6 +45,7 @@ createRoot(document.getElementById('root')).render(
                 <Route path="/" element={<HomePage />} />
                 <Route path="/products/:id" element={<ProductPage />} />
                 <Route path="/products" element={<ProductsPage />} />
+                <Route path="/wishlist" element={<WishlistPage />} />
                 <Route element={<ProtectedLayout />}>
                   <Route path="/account" element={<AccountPage />} />
                 </Route>
