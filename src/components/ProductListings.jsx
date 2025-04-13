@@ -5,11 +5,19 @@ import { AlertCircle } from 'lucide-react';
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert"
 import { useGetProductsQuery } from '@/lib/api';
 import { Skeleton } from './ui/skeleton';
+import { useGetProductsForSearchQueryQuery } from "@/lib/api";
+
+import { useSelector } from "react-redux";
 
 
 function ProductListings() {
 
-    const { data: products, isLoading, isError } = useGetProductsQuery();
+    const searchValue = useSelector((state) => state.search.value);
+
+    const { data: products, isLoading, isError } =
+        useGetProductsForSearchQueryQuery({
+            query: searchValue,
+        });
 
     const brands = [
         {
@@ -40,10 +48,7 @@ function ProductListings() {
         setSelectBrand(brand);
     }
 
-    const filterProducts = selectedBrand === "ALL" ? products : products.filter((product) => {
-        return product.brand.toLowerCase().includes(selectedBrand.toLowerCase());
-    })
-
+    
     if (isLoading) {
         return (
 
@@ -142,6 +147,12 @@ function ProductListings() {
         );
     }
 
+    const filterProducts = selectedBrand === "ALL"
+    ? products
+    : products.filter(({ product }) => {
+        return product.brand.toLowerCase().includes(selectedBrand.toLowerCase());
+    });
+
     return (
         <section className="px-8 py-8 lg:py-16">
             <div className="mb-12">
@@ -172,8 +183,8 @@ function ProductListings() {
 
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 mt-4 cursor-pointer">
                 {
-                    filterProducts.map((product) => {
-                        return (<ProductCard key={product._id} product={product} />)
+                    filterProducts.map(({ product, confidence }) => {
+                        return (<ProductCard key={product._id} product={product} confidence={confidence} />)
                     })
                 }
             </div>

@@ -17,6 +17,9 @@ export const api = createApi({
         getProducts: builder.query({
             query: () => "products",
         }),
+        getProductsForSearchQuery: builder.query({
+            query: ({ query }) => `products/search/retrieve?query=${query}`,
+        }),
         getProductsById: builder.query({
             query: (id) => `products/${id}`,
         }),
@@ -43,4 +46,4 @@ export const api = createApi({
     }),
 });
 
-export const { useGetProductsQuery, useGetProductsByIdQuery, useCreateProductMutation, useDeleteProductMutation, useCreateBuyingMutation } = api;
+export const { useGetProductsQuery, useGetProductsByIdQuery, useCreateProductMutation, useDeleteProductMutation, useCreateBuyingMutation, useGetProductsForSearchQueryQuery } = api;

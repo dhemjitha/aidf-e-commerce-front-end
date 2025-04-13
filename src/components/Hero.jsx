@@ -2,8 +2,22 @@ import React from 'react'
 import { Input } from './ui/input'
 import { Button } from './ui/button'
 import { Sparkles } from 'lucide-react'
+import { submit } from '@/lib/feature/searchSlice'
+import { useDispatch } from "react-redux";
 
 function Hero() {
+
+    const dispatch = useDispatch();
+
+    const handleSearch = (e) => {
+        e.preventDefault();
+        const searchQuery = e.target.search.value;
+        console.log(searchQuery);
+
+        dispatch(submit(searchQuery));
+
+    };
+
     return (
         <div className="relative min-h-screen">
 
@@ -17,10 +31,12 @@ function Hero() {
                 </p>
 
                 <form
+                    onSubmit={handleSearch}
                     className="w-full max-w-3xl bg-black/40 backdrop-blur-md lg:h-16 rounded-full p-2 flex items-center"
                 >
                     <Input
                         type="text"
+                        name="search"
                         placeholder="Describe your item, experience, or laptop..."
                         className="flex-grow  bg-transparent lg:text-lg  text-white placeholder:text-white/60 border-none outline-none ring-0 ring-offset-0 focus:border-none focus:outline-none focus:ring-0 focus:ring-offset-0 focus-visible:border-none focus-visible:outline-none focus-visible:ring-0 focus-visible:ring-offset-0 "
                     />
