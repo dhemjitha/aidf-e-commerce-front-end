@@ -26,16 +26,47 @@ import { Card, CardContent } from "@/components/ui/card"
 import { Skeleton } from "@/components/ui/skeleton"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { Separator } from "@/components/ui/separator"
-import { useGetProductsByIdQuery } from "@/lib/api"
+import { useCreateBuyingMutation, useGetProductsByIdQuery } from "@/lib/api"
 import { cn } from "@/lib/utils"
 
 export default function LaptopProductPage() {
-    const { id } = useParams()
-    const { data: product, isLoading, isError } = useGetProductsByIdQuery(id)
-    const [activeImage, setActiveImage] = useState(0)
-    const dispatch = useDispatch()
-    const wishlistItems = useSelector((state) => state.wishlist.items)
-    const isInWishlist = wishlistItems.some(item => item._id === id)
+    const { id } = useParams();
+    const { data: product, isLoading, isError } = useGetProductsByIdQuery(id);
+    const [createBuying, { isLoading: isCreateBuyingLoading}] = useCreateBuyingMutation();
+    const [activeImage, setActiveImage] = useState(0);
+    const dispatch = useDispatch();
+    const wishlistItems = useSelector((state) => state.wishlist.items);
+    const isInWishlist = wishlistItems.some(item => item._id === id);
+
+    const handleClick = async () => {
+
+        const userId = window?.Clerk?.user?.id;
+
+        if (!userId) {
+            console.error("No user ID found. Please log in.");
+            return;
+        }
+
+        
+        try {
+            toast.loading("Creating order...");
+            await createBuying({
+                productId: id,
+                userId: userId,
+                quantity: 1,
+                shippingAddress: "123 New York, America",
+                mobileNumber: 786295820,
+                checkoutDate: new Date().toISOString(),
+            })
+            toast.dismiss();
+            toast.success("Order created successfully");
+        } catch (error) {
+            toast.dismiss();
+            toast.error("Error creating order");
+            console.log(error);
+        }
+    }
+    
 
     // Generate placeholder images for the gallery
     const galleryImages = product ? [product.image, product.image, product.image, product.image] : []
@@ -356,7 +387,7 @@ export default function LaptopProductPage() {
                                     <ShoppingCart className="h-4 w-4 mr-1 sm:mr-2" />
                                     Add to Cart
                                 </Button>
-                                <Button size="sm" className="flex-1 h-9 sm:h-10 text-xs sm:text-sm">
+                                <Button size="sm" className="flex-1 h-9 sm:h-10 text-xs sm:text-sm" onClick={handleClick}>
                                     Buy Now
                                 </Button>
                             </div>

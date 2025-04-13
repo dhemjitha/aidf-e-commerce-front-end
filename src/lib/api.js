@@ -42,8 +42,18 @@ export const api = createApi({
                 method: "POST",
                 body: buying,
             })
-        })
+        }),
+        getAllBuyingProductsForUser: builder.query({
+            query: () => "buyings/user",
+        }),
     }),
 });
 
-export const { useGetProductsQuery, useGetProductsByIdQuery, useCreateProductMutation, useDeleteProductMutation, useCreateBuyingMutation, useGetProductsForSearchQueryQuery } = api;
+export const { 
+    useGetProductsQuery, 
+    useGetProductsByIdQuery, 
+    useCreateProductMutation, 
+    useDeleteProductMutation, 
+    useCreateBuyingMutation, 
+    useGetProductsForSearchQueryQuery, 
+    useGetAllBuyingProductsForUserQuery } = api;

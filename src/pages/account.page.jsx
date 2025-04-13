@@ -1,30 +1,39 @@
-import { Skeleton } from "@/components/ui/skeleton";
 import { useUser } from "@clerk/clerk-react";
 import { Navigate } from "react-router";
+import { useGetAllBuyingProductsForUserQuery } from "@/lib/api";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { useEffect } from "react";
+import AccountPageSkeleton from "@/components/account/AccountPageSkeleton";
+import PersonalInfoTab from "@/components/account/PersonalInfoTab";
+import PurchasesTab from "@/components/account/PurchasesTab";
 
 const AccountPage = () => {
-
     const { isLoaded, isSignedIn, user } = useUser();
+    const { 
+        data: purchases, 
+        isLoading: isPurchasesLoading, 
+        isError: isPurchasesError 
+    } = useGetAllBuyingProductsForUserQuery();
+
+    useEffect(() => {
+        if (purchases) {
+            console.log("Purchases data structure:", purchases);
+        }
+    }, [purchases]);
+
+    const normalizedPurchases = purchases?.map(purchase => {
+        if (purchase.productId && typeof purchase.productId === 'object') {
+            return {
+                ...purchase,
+                product: purchase.productId
+            };
+        }
+        return purchase;
+    });
 
     if (!isLoaded) {
-        return (
-            <main className="container mx-auto px-4 py-8 min-h-screen">
-                <h1 className="text-3xl md:text-4xl font-bold">My Account</h1>
-                <div className="mt-8">
-                    <h2 className="text-xl md:text-2xl font-semibold mb-4">
-                        Personal Information
-                    </h2>
-                    <div className="grid md:grid-cols-2 gap-8">
-                        <div className="space-y-4">
-                            <Skeleton className="h-6 w-48 rounded-md bg-gradient-to-r from-gray-300 via-gray-400 to-gray-300 animate-pulse" />
-                            <Skeleton className="h-6 w-64 rounded-md bg-gradient-to-r from-gray-300 via-gray-400 to-gray-300 animate-pulse" />
-                        </div>
-                    </div>
-                </div>
-            </main>
-        );
+        return <AccountPageSkeleton />;
     }
-
 
     if (!isSignedIn) {
         return <Navigate to="/sign-in" />
@@ -33,17 +42,25 @@ const AccountPage = () => {
     return (
         <main className="container mx-auto px-4 py-8 min-h-screen">
             <h1 className="text-3xl md:text-4xl font-bold">My Account</h1>
-            <div className="mt-8">
-                <h2 className="text-xl md:text-2xl font-semibold mb-4">
-                    Personal Information
-                </h2>
-                <div className="grid md:grid-cols-2 gap-8">
-                    <div className="space-y-4">
-                        <p className="text-muted-foreground">Name: {user?.fullName}</p>
-                        <p className="text-muted-foreground">Email: {user?.emailAddresses[0].emailAddress}</p>
-                    </div>
-                </div>
-            </div>
+            
+            <Tabs defaultValue="info" className="mt-8">
+                <TabsList className="mb-6">
+                    <TabsTrigger value="info">Personal Info</TabsTrigger>
+                    <TabsTrigger value="purchases">My Purchases</TabsTrigger>
+                </TabsList>
+                
+                <TabsContent value="info">
+                    <PersonalInfoTab user={user} />
+                </TabsContent>
+                
+                <TabsContent value="purchases">
+                    <PurchasesTab 
+                        purchases={normalizedPurchases} 
+                        isLoading={isPurchasesLoading} 
+                        isError={isPurchasesError} 
+                    />
+                </TabsContent>
+            </Tabs>
         </main>
     );
 }
