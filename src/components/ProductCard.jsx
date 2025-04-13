@@ -4,8 +4,10 @@ import { Info, Star } from 'lucide-react'
 import { Link } from 'react-router'
 
 function ProductCard(props) {
-    return (
+    
+    const isFromSearch = props.isFromSearch === true;
 
+    return (
         <Link
             to={`/products/${props.product._id}`}
             key={props.product._id}
@@ -17,6 +19,12 @@ function ProductCard(props) {
                     alt={props.product.name}
                     className="object-cover w-full h-full absolute transition-transform group-hover:scale-105"
                 />
+                {isFromSearch && props.confidence !== undefined && (
+                    <div className="absolute top-2 right-2 bg-black/70 text-white px-2 py-1 rounded-full text-xs font-medium flex items-center">
+                        {(props.confidence * 100).toFixed(2)}% match
+                    </div>
+                )}
+
             </div>
 
             <div className="mt-3 space-y-2">
@@ -35,13 +43,8 @@ function ProductCard(props) {
                 <div className="flex items-baseline space-x-2">
                     <span className="text-xl font-bold">${props.product.price}</span>
                 </div>
-                <p className="text-muted-foreground">
-                    Similarity: {(props.confidence * 100).toFixed(2)}%
-                </p>
             </div>
-
         </Link>
-
     )
 }
 

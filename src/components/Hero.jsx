@@ -16,6 +16,14 @@ function Hero() {
 
         dispatch(submit(searchQuery));
 
+        const productListingsElement = document.getElementById("product-listings")
+        if (productListingsElement) {
+            productListingsElement.scrollIntoView({
+                behavior: "smooth",
+                block: "start",
+            })
+        }
+
     };
 
     return (

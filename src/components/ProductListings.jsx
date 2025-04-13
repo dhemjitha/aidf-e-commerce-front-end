@@ -14,7 +14,7 @@ function ProductListings() {
 
     const searchValue = useSelector((state) => state.search.value);
 
-    const { data: products, isLoading, isError } =
+    const { data: products, isLoading, isError, isFetching } =
         useGetProductsForSearchQueryQuery({
             query: searchValue,
         });
@@ -49,7 +49,7 @@ function ProductListings() {
     }
 
     
-    if (isLoading) {
+    if (isLoading || isFetching) {
         return (
 
             <section className="px-8 py-8 lg:py-16">
@@ -79,7 +79,7 @@ function ProductListings() {
                     </p>
                 </div>
 
-                <div className="space-y-8">
+                <div id="product-listings" className="space-y-8">
                     <div>
                         <Skeleton className="h-8 w-full max-w-[700px] bg-gray-300/70" />
                     </div>
@@ -134,7 +134,7 @@ function ProductListings() {
                     </p>
                 </div>
 
-                <Alert variant="destructive">
+                <Alert id="product-listings" variant="destructive">
                     <AlertCircle className="h-4 w-4" />
                     <AlertTitle>Error</AlertTitle>
                     <AlertDescription>
@@ -181,10 +181,15 @@ function ProductListings() {
                 </p>
             </div>
 
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 mt-4 cursor-pointer">
+            <div id="product-listings" className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 mt-4 cursor-pointer">
                 {
                     filterProducts.map(({ product, confidence }) => {
-                        return (<ProductCard key={product._id} product={product} confidence={confidence} />)
+                        return (<ProductCard 
+                            key={product._id} 
+                            product={product} 
+                            confidence={confidence} 
+                            isFromSearch={searchValue.trim() !== ""}
+                        />)
                     })
                 }
             </div>
