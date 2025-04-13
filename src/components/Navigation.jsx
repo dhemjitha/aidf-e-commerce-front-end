@@ -68,6 +68,17 @@ function Navigation() {
                         Home
                     </Link>
 
+                    <Button variant="ghost" className="relative rounded-full" onClick={toggleMenu}>
+                    <Link to="/wishlist" className="flex items-center">
+                        <span className="text-white">Wishlist</span> <Heart className={cn("h-5 w-5 ml-2", wishlistCount > 0 && "fill-red-500 text-red-500")} />
+                        {wishlistCount > 0 && (
+                            <span className="absolute -top-1 -right-1 bg-red-500 text-white text-xs rounded-full h-4 w-4 flex items-center justify-center">
+                                {wishlistCount}
+                            </span>
+                        )}
+                    </Link>
+                </Button>
+
                     <SignedOut>
                         <Button variant="ghost" asChild className="mb-3" onClick={toggleMenu}>
                             <Link to="/sign-in">Log In</Link>
