@@ -4,6 +4,7 @@ import { Button } from './ui/button'
 import { Sparkles } from 'lucide-react'
 import { submit } from '@/lib/feature/searchSlice'
 import { useDispatch } from "react-redux";
+import { SparklesText } from './magicui/sparkles-text'
 
 function Hero() {
 
@@ -36,8 +37,8 @@ function Hero() {
                 <p className="text-xl mb-12 text-center max-w-2xl">
                     Describe your dream laptop and experience,
                     and we'll find you the perfect and well-matched item.
+                    <SparklesText className={"text-xl"}>Introducing World's First AI Laptop Search Engine</SparklesText>
                 </p>
-
                 <form
                     onSubmit={handleSearch}
                     className="w-full max-w-3xl bg-black/40 backdrop-blur-md lg:h-16 rounded-full p-2 flex items-center"
