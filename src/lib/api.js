@@ -46,6 +46,12 @@ export const api = createApi({
         getAllBuyingProductsForUser: builder.query({
             query: () => "buyings/user",
         }),
+        deleteBuying: builder.mutation({
+            query: (id) => ({
+                url: `buyings/${id}`,
+                method: "DELETE",
+            }),
+        }),
     }),
 });
 
@@ -56,4 +62,6 @@ export const {
     useDeleteProductMutation, 
     useCreateBuyingMutation, 
     useGetProductsForSearchQueryQuery, 
-    useGetAllBuyingProductsForUserQuery } = api;
+    useGetAllBuyingProductsForUserQuery,
+    useDeleteBuyingMutation,
+} = api;

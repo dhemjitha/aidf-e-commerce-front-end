@@ -26,7 +26,7 @@ import { Card, CardContent } from "@/components/ui/card"
 import { Skeleton } from "@/components/ui/skeleton"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { Separator } from "@/components/ui/separator"
-import { useCreateBuyingMutation, useGetProductsByIdQuery } from "@/lib/api"
+import { useCreateBuyingMutation, useGetAllBuyingProductsForUserQuery, useGetProductsByIdQuery } from "@/lib/api"
 import { cn } from "@/lib/utils"
 
 export default function LaptopProductPage() {
@@ -37,6 +37,8 @@ export default function LaptopProductPage() {
     const dispatch = useDispatch();
     const wishlistItems = useSelector((state) => state.wishlist.items);
     const isInWishlist = wishlistItems.some(item => item._id === id);
+
+    const { refetch } = useGetAllBuyingProductsForUserQuery();
 
     const handleClick = async () => {
 
@@ -60,6 +62,7 @@ export default function LaptopProductPage() {
             })
             toast.dismiss();
             toast.success("Order created successfully");
+            refetch();
         } catch (error) {
             toast.dismiss();
             toast.error("Error creating order");

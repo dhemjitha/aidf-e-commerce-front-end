@@ -1,3 +1,4 @@
+import React from "react"
 import { formatDistanceToNow } from "date-fns"
 import { 
   Package, 
@@ -6,7 +7,8 @@ import {
   ShoppingCart, 
   Truck, 
   Clock, 
-  Trash2
+  Trash2,
+  Loader2
 } from "lucide-react"
 import { useOrderStatus } from "@/hooks/useOrderStatus"
 import { 
@@ -19,6 +21,18 @@ import {
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip"
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+} from "@/components/ui/alert-dialog"
+import { useDeleteBuyingMutation, useGetAllBuyingProductsForUserQuery } from "@/lib/api"
+import { toast } from "sonner"
 
 const StatusIndicator = ({ status }) => {
   const colors = {
@@ -67,6 +81,24 @@ const PurchaseCard = ({ purchase, onViewDetails }) => {
   const deliveryDate = purchase.checkoutDate 
     ? new Date(purchase.checkoutDate).toLocaleDateString()
     : "N/A";
+
+  const [deleteBuying, { isLoading: isDeleting }] = useDeleteBuyingMutation();
+  const { refetch } = useGetAllBuyingProductsForUserQuery();
+  const [isDeleteDialogOpen, setIsDeleteDialogOpen] = React.useState(false);
+
+  const handleDelete = async () => {
+    try {
+      toast.loading("Deleting order...");
+      await deleteBuying(purchase._id);
+      toast.dismiss();
+      toast.success("Order deleted successfully");
+      refetch();
+      setIsDeleteDialogOpen(false);
+    } catch (error) {
+      toast.dismiss();
+      toast.error("Failed to delete order");
+    }
+  };
 
   return (
     <TooltipProvider>
@@ -168,10 +200,43 @@ const PurchaseCard = ({ purchase, onViewDetails }) => {
             variant="destructive" 
             size="sm"
             className="flex items-center gap-1.5 text-sm font-medium"
+            onClick={() => setIsDeleteDialogOpen(true)}
           >
             <Trash2 className="h-3.5 w-3.5" />
             Delete Order
           </Button>
+          
+          <AlertDialog open={isDeleteDialogOpen} onOpenChange={setIsDeleteDialogOpen}>
+            <AlertDialogContent>
+              <AlertDialogHeader>
+                <AlertDialogTitle>Are you sure you want to delete this order?</AlertDialogTitle>
+                <AlertDialogDescription>
+                  This action cannot be undone. This will permanently delete the order
+                  for "{productName}" from your purchase history.
+                </AlertDialogDescription>
+              </AlertDialogHeader>
+              <AlertDialogFooter>
+                <AlertDialogCancel disabled={isDeleting}>Cancel</AlertDialogCancel>
+                <AlertDialogAction
+                  onClick={handleDelete}
+                  disabled={isDeleting}
+                  className="bg-destructive text-destructive-foreground hover:bg-destructive/90"
+                >
+                  {isDeleting ? (
+                    <>
+                      <Loader2 className="h-3.5 w-3.5 animate-spin" />
+                      Deleting...
+                    </>
+                  ) : (
+                    <>
+                      <Trash2 className="h-3.5 w-3.5" />
+                      Delete
+                    </>
+                  )}
+                </AlertDialogAction>
+              </AlertDialogFooter>
+            </AlertDialogContent>
+          </AlertDialog>
         </CardFooter>
       </Card>
     </TooltipProvider>
