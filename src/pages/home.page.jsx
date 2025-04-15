@@ -1,3 +1,4 @@
+import HeroGrid from "@/components/HeroGrid"
 import Hero from "../components/Hero"
 import Navigation from "../components/Navigation"
 import ProductListings from "../components/ProductListings"
@@ -14,6 +15,7 @@ const HomePage = () => {
             />
           </div>
           <ProductListings/>
+          <HeroGrid/>
         </>
       )
 }

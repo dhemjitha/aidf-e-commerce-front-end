@@ -154,7 +154,7 @@ function ProductListings() {
     });
 
     return (
-        <section className="px-8 py-8 lg:py-16">
+        <section className="px-4 lg:px-16 py-8 lg:py-16">
             <div className="mb-12">
                 <h2 className="text-3xl md:text-4xl font-bold mb-4">
                     What are you looking for?

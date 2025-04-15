@@ -20,7 +20,7 @@ function Navigation() {
         <nav className="z-10 bg-black flex items-center justify-between text-white px-8 py-4">
             <div className="flex items-center space-x-8">
                 <Link to="/" className="text-2xl font-bold">
-                    ShopZoneAI
+                    <img src="/assets/logo/logo.png" alt="logo" className="w-32 h-full"/>
                 </Link>
 
                 <div className="hidden md:flex space-x-6">
